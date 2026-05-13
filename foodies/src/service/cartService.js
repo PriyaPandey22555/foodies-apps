@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "../util/constants";
+
 
 const API_URL = "https://foodies-apps-nmhe.onrender.com/api/cart";
 
