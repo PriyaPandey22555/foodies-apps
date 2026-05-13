@@ -1,0 +1,39 @@
+.navbar {
+  background-color: #c1121f !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* .nav-link {
+  color: #ffffff !important;
+} */
+
+.nav-link:hover {
+  color: #ffb3b3 !important;
+}
+
+.active {
+  color: #ffb3b3 !important;
+}
+
+.btn-primary {
+  background-color: #e63946 !important;
+  border-color: #e63946 !important;
+}
+
+.btn-outline-primary {
+  color: #e63946 !important;
+  border-color: #e63946 !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: #e63946 !important;
+  color: white !important;
+}
+
+.dropdown-menu li {
+  cursor: pointer;
+}
+
+.badge {
+  background-color: #e63946 !important;
+}

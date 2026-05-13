@@ -1,0 +1,27 @@
+.contact-section {
+  min-height: 100vh;
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url("https://media.istockphoto.com/id/1191634648/photo/frame-of-fresh-organic-vegetables-with-spices-and-oil.jpg?s=170667a&w=0&k=20&c=DV7bBxV9ban1eTzU4eQgGBp8Zgrck8XSdpUzvJSI8ag=");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.contact-form {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+}
+
+.custom-input {
+  border-radius: 10px;
+  padding: 12px;
+  border: 2px solid #e9ecef;
+}
+
+.custom-input:focus {
+  border-color: #e63946;
+  box-shadow: 0 0 0 0.2rem rgba(230, 57, 70, 0.15);
+}

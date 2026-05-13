@@ -1,0 +1,89 @@
+.food-card {
+  width: 240px;
+  border-radius: 14px !important;
+  overflow: hidden;
+  border: 0.5px solid #e9ecef !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  transform-origin: center;
+}
+
+.food-card:hover {
+   transform: scale(1.15);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+.food-card-img {
+  height: 160px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.food-card-body {
+  padding: 10px 12px !important;
+}
+
+.food-card-title {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-bottom: 4px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.food-card-desc {
+  font-size: 11px !important;
+  color: #6c757d;
+  margin-bottom: 8px !important;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.food-card-price {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e63946;
+}
+
+.food-card-stars {
+  font-size: 11px;
+  color: #f4a261;
+}
+
+.food-card-footer {
+  padding: 8px 12px !important;
+  background: #fafafa !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.food-btn-view {
+  padding: 4px 10px !important;
+  border: 0.5px solid #e63946 !important;
+  color: #e63946 !important;
+  background: transparent !important;
+  border-radius: 8px !important;
+  font-size: 11px !important;
+}
+
+.food-btn-add {
+  padding: 4px 10px !important;
+  background: #e63946 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-size: 11px !important;
+}
+
+.food-btn-minus {
+  padding: 4px 10px !important;
+  background: #ff6b6b !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-size: 11px !important;
+}
