@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const  API_URL = "http://localhost:8080/api/foods";
+"https://foodies-apps-nmhe.onrender.com/api/foods"
 
  export const fetchFoodList = async () => {
        try {
