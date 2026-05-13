@@ -1,6 +1,6 @@
 import axios from "axios";
 
-"https://foodies-apps-nmhe.onrender.com/api/foods"
+const  API_URL = "https://foodies-apps-nmhe.onrender.com/api/foods";
 
  export const fetchFoodList = async () => {
        try {
