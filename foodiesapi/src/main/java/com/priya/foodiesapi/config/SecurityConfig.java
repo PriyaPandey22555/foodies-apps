@@ -55,7 +55,7 @@ public class SecurityConfig {
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173","http://localhost:5174","https://foodies-apps-9k8o.vercel.app/","https://foodies-apps-9k8o-git-main-priyapandey22555s-projects.vercel.app/"));
+        config.setAllowedOrigins(List.of("http://localhost:5173","http://localhost:5174","https://foodies-apps-9k8o.vercel.app/","https://foodies-apps-xvhw.vercel.app/"));
         config.setAllowedMethods(List.of("GET","POST","DELETE","PUT","OPTIONS","PATCH"));
         config.setAllowedHeaders(List.of("Authorization","Content-Type"));
         config.setAllowCredentials(true);
