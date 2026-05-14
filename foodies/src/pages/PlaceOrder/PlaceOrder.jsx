@@ -10,11 +10,10 @@ import { useNavigate } from "react-router-dom";
 // import Razorpay from "razorpay";
 
 const PlaceOrder = () => {
-  const { foodList, quantities, setQuantities} = useContext(StoreContext);
+  const { foodList, quantities, setQuantities } = useContext(StoreContext);
   const token = localStorage.getItem("token");
 
   const navigate = useNavigate();
-  
 
   const [data, setData] = useState({
     firstName: "",
@@ -37,102 +36,113 @@ const PlaceOrder = () => {
     event.preventDefault();
     console.log("TOKEN:", token);
     const orderData = {
-        userAddress:`${data.firstName} ${data.lastName},${data.address},${data.city},${data.state},${data.zip}`,
-        phoneNumber: data.phoneNumber,
-        email: data.email,
-        orderedItems: cartItems.map(item => ({
-            foodId: item.id,
-            quantity: quantities[item.id],
-            price:item.price * quantities[item.id],
-            category:item.category,
-            imageUrl:item.imageUrl,
-            description:item.description,
-            name:item.name
-        })),
-        amount: total.toFixed(2),
-        orderStatus: "Preparing"
-
+      userAddress: `${data.firstName} ${data.lastName},${data.address},${data.city},${data.state},${data.zip}`,
+      phoneNumber: data.phoneNumber,
+      email: data.email,
+      orderedItems: cartItems.map((item) => ({
+        foodId: item.id,
+        quantity: quantities[item.id],
+        price: item.price * quantities[item.id],
+        category: item.category,
+        imageUrl: item.imageUrl,
+        description: item.description,
+        name: item.name,
+      })),
+      amount: total.toFixed(2),
+      orderStatus: "Preparing",
     };
 
     try {
-       const response = await axios.post('https://foodies-apps-nmhe.onrender.com/api/orders/create', orderData,{headers:{'Authorization': `Bearer ${token}`}})
-       if(response.status === 201 && response.data.razorpayOrderId){
-        //   initiate the payment 
+      const response = await axios.post(
+        "https://foodies-apps-nmhe.onrender.com/api/orders/create",
+        orderData,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+      if (response.status === 201 && response.data.razorpayOrderId) {
+        //   initiate the payment
         initiateRazorpayPayment(response.data);
-       }else{
+      } else {
         toast.error("enable to place order. Please try again");
-       }
+      }
     } catch (error) {
-        toast.error("Unable to place order. Please try again.");
+      toast.error("Unable to place order. Please try again.");
     }
   };
-   
-     const initiateRazorpayPayment = (order) => {
-        const options = {
-            key:RAZORPAY_KEY,
-            amount:order.amount * 100,  // convert to paise
-            currency :"INR" ,
-            name:"Food Land",
-             description: "Food order payment",
-             order_id:order.razorpayOrderId,
-             handler:  async function(razorpayResponse){
-               await verifyPayment(razorpayResponse);
-             },
-             prefill:{
-                name:`${data.firstName} ${data.lastName}`,
-                email: data.email,
-                contact:data.phoneNumber
-             },
-           theme:{color:"#3399cc"},
-           modal:{
-            ondismiss: async function() {
-                toast.error("Payment cancelled.");
-               await deleteOrder(order.id);
-            }
-           } 
-        };
-         const razorpay = new window.Razorpay(options);
-         razorpay.open();
-     };
 
-     const verifyPayment = async  (razorpayResponse) =>{
-         const paymentData = {
-            razorpay_payment_id: razorpayResponse.razorpay_payment_id,
-            razorpay_order_id: razorpayResponse.razorpay_order_id,
-            razorpay_signature: razorpayResponse.razorpay_signature
-         };
+  const initiateRazorpayPayment = (order) => {
+    const options = {
+      key: RAZORPAY_KEY,
+      amount: order.amount * 100, // convert to paise
+      currency: "INR",
+      name: "Food Land",
+      description: "Food order payment",
+      order_id: order.razorpayOrderId,
+      handler: async function (razorpayResponse) {
+        await verifyPayment(razorpayResponse);
+      },
+      prefill: {
+        name: `${data.firstName} ${data.lastName}`,
+        email: data.email,
+        contact: data.phoneNumber,
+      },
+      theme: { color: "#3399cc" },
+      modal: {
+        ondismiss: async function () {
+          toast.error("Payment cancelled.");
+          await deleteOrder(order.id);
+        },
+      },
+    };
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
+  };
+
+  const verifyPayment = async (razorpayResponse) => {
+    const paymentData = {
+      razorpay_payment_id: razorpayResponse.razorpay_payment_id,
+      razorpay_order_id: razorpayResponse.razorpay_order_id,
+      razorpay_signature: razorpayResponse.razorpay_signature,
+    };
     try {
-        const response = await axios.post('https://foodies-apps-nmhe.onrender.com/api/orders/verify',paymentData,{headers:{'Authorization': `Bearer ${token}`}});
-    if(response.status === 200){
-      toast.success('Payment Successsfull.');
-     await clearCart();
-     navigate('/myorders');
-    }else {
-        toast.error('Payment failed. Please try again');
-        navigate('/')
-    }
+      const response = await axios.post(
+        "https://foodies-apps-nmhe.onrender.com/api/orders/verify",
+        paymentData,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+      if (response.status === 200) {
+        toast.success("Payment Successsfull.");
+        await clearCart();
+        navigate("/myorders");
+      } else {
+        toast.error("Payment failed. Please try again");
+        navigate("/");
+      }
     } catch (error) {
-        toast.error('Payment failed. Please try again');
-        
+      toast.error("Payment failed. Please try again");
     }
-     };
+  };
 
-    const deleteOrder = async (orderId)  =>{
-        try {
-         await axios.delete('https://foodies-apps-nmhe.onrender.com/api/orders/'+ orderId ,{headers:{'Authorization': `Bearer ${token}`}});
-        } catch (error) {
-          toast.error('Something went wrong. Contact support.');  
-        }
+  const deleteOrder = async (orderId) => {
+    try {
+      await axios.delete(
+        "https://foodies-apps-nmhe.onrender.com/api/orders/" + orderId,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+    } catch (error) {
+      toast.error("Something went wrong. Contact support.");
     }
+  };
 
-    const clearCart = async () =>{
-        try {
-         await axios.delete("https://foodies-apps-nmhe.onrender.com/api/cart",{headers:{'Authorization': `Bearer ${token}`}});
-         setQuantities({});
-        } catch (error) {
-            toast.error('Error while clearing the cart.');
-        }
+  const clearCart = async () => {
+    try {
+      await axios.delete("https://foodies-apps-nmhe.onrender.com/api/cart", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setQuantities({});
+    } catch (error) {
+      toast.error("Error while clearing the cart.");
     }
+  };
 
   // cart items
   const cartItems = foodList.filter((food) => quantities[food.id] > 0);
@@ -266,13 +276,15 @@ const PlaceOrder = () => {
                     Phone Number
                   </label>
                   <input
-                    type="number"
+                    type="tel"
                     className="form-control"
                     id=""
                     placeholder="Enter your number"
                     required
                     name="phoneNumber"
                     maxLength={10}
+    pattern="[0-9]{10}"
+
                     onChange={onChangeHandler}
                     value={data.phoneNumber}
                   />
@@ -339,7 +351,8 @@ const PlaceOrder = () => {
                     placeholder="143001"
                     required
                     onChange={onChangeHandler}
-                    name="zip" value={data.zip}
+                    name="zip"
+                    value={data.zip}
                   />
                 </div>
               </div>
