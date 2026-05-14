@@ -30,42 +30,45 @@ import java.util.List;
 @AllArgsConstructor
 public class SecurityConfig {
 
- private final AppUserDetailsService userDetailsService;
- private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AppUserDetailsService userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-           http
-                   .cors(Customizer.withDefaults())
-                   .csrf(AbstractHttpConfigurer::disable)
-                   .authorizeHttpRequests(auth -> auth.requestMatchers("/api/register", "/api/login","/api/foods/**","/api/orders/all","/api/orders/create", "/api/orders/status/**","/api/orders/count","/api/orders/delivered/count","/api/orders/revenue","/api/ai/**").permitAll().anyRequest().authenticated())
-                   .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-                 http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-            return http.build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .cors(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/register", "/api/login", "/api/foods/**", "/api/orders/all", "/api/orders/create", "/api/orders/status/**", "/api/orders/count", "/api/orders/delivered/count", "/api/orders/revenue", "/api/ai/**","/api/orders/verify").permitAll().anyRequest().authenticated())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
-    public CorsFilter corsFilter(){
+    public CorsFilter corsFilter() {
         return new CorsFilter(corsConfigurationSource());
     }
+
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173","http://localhost:5174","https://foodies-apps-9k8o.vercel.app/","https://foodies-apps-xvhw.vercel.app/"));
-        config.setAllowedMethods(List.of("GET","POST","DELETE","PUT","OPTIONS","PATCH"));
-        config.setAllowedHeaders(List.of("Authorization","Content-Type"));
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", "https://foodies-apps-9k8o.vercel.app", "https://foodies-apps-xvhw.vercel.app"));
+        config.setAllowedMethods(List.of("GET", "POST", "DELETE", "PUT", "OPTIONS", "PATCH"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",config);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(){
+    public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
