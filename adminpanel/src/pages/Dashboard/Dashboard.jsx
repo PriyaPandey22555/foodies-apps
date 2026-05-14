@@ -14,12 +14,12 @@ const Dashboard = () => {
   const fetchStats = async () => {
     try {
       const [foods, orders, delivered, revenue, categories, allOrders] = await Promise.all([
-        axios.get('http://localhost:8080/api/foods/count'),
-        axios.get('http://localhost:8080/api/orders/count'),
-        axios.get('http://localhost:8080/api/orders/delivered/count'),
-        axios.get('http://localhost:8080/api/orders/revenue'),
-        axios.get('http://localhost:8080/api/foods/category/count'),
-        axios.get('http://localhost:8080/api/orders/all'),
+        axios.get('https://foodies-apps-nmhe.onrender.com/api/foods/count'),
+axios.get('https://foodies-apps-nmhe.onrender.com/api/orders/count'),
+axios.get('https://foodies-apps-nmhe.onrender.com/api/orders/delivered/count'),
+axios.get('https://foodies-apps-nmhe.onrender.com/api/orders/revenue'),
+axios.get('https://foodies-apps-nmhe.onrender.com/api/foods/category/count'),
+axios.get('https://foodies-apps-nmhe.onrender.com/api/orders/all'),
       ]);
       setStats({
         totalFoods: foods.data,
