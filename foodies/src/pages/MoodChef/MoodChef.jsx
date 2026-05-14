@@ -32,7 +32,7 @@ Write a warm 1-2 sentence message and pick 3-4 foods from the list for this mood
 Respond ONLY in JSON (no markdown, no extra text):
 {"message": "your message here", "foods": ["Food 1", "Food 2", "Food 3"]}`;
 
-    const response = await fetch("http://localhost:8080/api/ai/mood-chef", {
+    const response = await fetch("https://foodies-apps-nmhe.onrender.com/api/ai/mood-chef", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt }),
